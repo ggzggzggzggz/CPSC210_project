@@ -57,6 +57,7 @@ public class ToDoListTest {
     @Test
     public void changeStatusTest() {
         test.addTask("test1");
+        test.addTask("test2");
         assertFalse(test.getStatus("test1"));
         test.changeStatus(true,"test1");
         assertTrue(test.getStatus("test1"));
