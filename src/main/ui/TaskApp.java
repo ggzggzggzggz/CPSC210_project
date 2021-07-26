@@ -116,5 +116,7 @@ public class TaskApp {
         for (int a = toDoList.getSize() - 1; a >= 0; a--) {
             System.out.printf(toDoList.showStatus(a) + "\n");
         }
+        System.out.printf("The number of completed tasks: " + toDoList.doneNumber() + "\n");
+        System.out.println("The number of uncompleted tasks: " + toDoList.notDoneNumber());
     }
 }

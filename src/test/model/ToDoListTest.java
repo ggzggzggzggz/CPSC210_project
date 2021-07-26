@@ -73,5 +73,27 @@ public class ToDoListTest {
         test.changeStatus(true, "test1");
         assertEquals("Name: test1     Status: DONE",test.showStatus(0));
     }
+
+    @Test
+    public void doneNumberTest() {
+        test.addTask("test1");
+        test.addTask("test2");
+        assertEquals(0,test.doneNumber());
+        test.changeStatus(true,"test1");
+        assertEquals(1,test.doneNumber());
+        test.changeStatus(true,"test2");
+        assertEquals(2,test.doneNumber());
+    }
+
+    @Test
+    public void notDoneNumberTest() {
+        test.addTask("test1");
+        test.addTask("test2");
+        assertEquals(2,test.notDoneNumber());
+        test.changeStatus(true,"test1");
+        assertEquals(1,test.notDoneNumber());
+        test.changeStatus(true,"test2");
+        assertEquals(0,test.notDoneNumber());
+    }
 }
 

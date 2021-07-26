@@ -21,7 +21,7 @@ public class ToDoList {
     //EFFECTS: delete a task in todolist
     public void deleteTask(String s) {
         for (int a = toDoList.size() - 1; a >= 0; a--) {
-            if (toDoList.get(a).getName() == s) {
+            if (toDoList.get(a).getName().equals(s)) {
                 toDoList.remove(toDoList.get(a));
             }
         }
@@ -31,7 +31,7 @@ public class ToDoList {
     public boolean isInList(String s) {
         boolean b = false;
         for (int a = toDoList.size() - 1; a >= 0; a--) {
-            if (toDoList.get(a).getName() == s) {
+            if (toDoList.get(a).getName().equals(s)) {
                 b = true;
             }
         }
@@ -41,7 +41,7 @@ public class ToDoList {
     //EFFECTS: change task status
     public void changeStatus(boolean b, String s) {
         for (int a = toDoList.size() - 1; a >= 0; a--) {
-            if (toDoList.get(a).getName() == s) {
+            if (toDoList.get(a).getName().equals(s)) {
                 toDoList.get(a).setStatus(b);
             }
         }
@@ -52,7 +52,7 @@ public class ToDoList {
     public boolean getStatus(String s) {
         boolean b = false;
         for (int a = toDoList.size() - 1; a >= 0; a--) {
-            if (toDoList.get(a).getName() == s) {
+            if (toDoList.get(a).getName().equals(s)) {
                 b = toDoList.get(a).getStatus();
             }
         }
@@ -74,5 +74,27 @@ public class ToDoList {
             s = "Name: " + toDoList.get(i).getName() + "     Status: NOT DONE";
         }
         return s;
+    }
+
+    //EFFECTS: return the number of done tasks
+    public int doneNumber() {
+        int i = 0;
+        for (int a = toDoList.size() - 1; a >= 0; a--) {
+            if (toDoList.get(a).getStatus()) {
+                i++;
+            }
+        }
+        return i;
+    }
+
+    //EFFECTS: return the number of not done tasks
+    public int notDoneNumber() {
+        int i = 0;
+        for (int a = toDoList.size() - 1; a >= 0; a--) {
+            if (!toDoList.get(a).getStatus()) {
+                i++;
+            }
+        }
+        return i;
     }
 }
