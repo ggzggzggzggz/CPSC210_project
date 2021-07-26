@@ -1,5 +1,6 @@
 package model;
 
+// Represents a task having name and status
 public class Task {
     private boolean status; //if done is true, have not done is false
     private String name; //name of the task

@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
+// Represents a todolist having tasks
 public class ToDoList {
     ArrayList<Task> toDoList = new ArrayList<>();
 
@@ -11,40 +12,67 @@ public class ToDoList {
 
     //MODIFIES: this
     //EFFECTS: add a task in todolist
-    public void addTask(Task task) {
+    public void addTask(String s) {
+        Task task = new Task(s);
         toDoList.add(task);
     }
 
-    //REQUIRES: this task has been in todolist
     //MODIFIES: this
     //EFFECTS: delete a task in todolist
-    public void deleteTask(Task task) {
-        toDoList.remove(task);
-    }
-
-    //EFFECTS: return the number of task which has not been done
-    public int notDoneTaskNumber() {
-        int i = 0;
+    public void deleteTask(String s) {
         for (int a = toDoList.size() - 1; a >= 0; a--) {
-            if (!toDoList.get(a).getStatus()) {
-                i++;
+            if (toDoList.get(a).getName() == s) {
+                toDoList.remove(toDoList.get(a));
             }
         }
-        return i;
     }
 
-    //EFFECTS: check whether a task in the list
-    public boolean isInList(Task task) {
-        return toDoList.contains(task);
+    //EFFECTS: return whether a task in the list
+    public boolean isInList(String s) {
+        boolean b = false;
+        for (int a = toDoList.size() - 1; a >= 0; a--) {
+            if (toDoList.get(a).getName() == s) {
+                b = true;
+            }
+        }
+        return b;
     }
 
-    //EFFECTS: get the size of list
+    //EFFECTS: change task status
+    public void changeStatus(boolean b, String s) {
+        for (int a = toDoList.size() - 1; a >= 0; a--) {
+            if (toDoList.get(a).getName() == s) {
+                toDoList.get(a).setStatus(b);
+            }
+        }
+    }
+
+    //REQUIRES: this task has been in todolist
+    //EFFECTS: return task status
+    public boolean getStatus(String s) {
+        boolean b = false;
+        for (int a = toDoList.size() - 1; a >= 0; a--) {
+            if (toDoList.get(a).getName() == s) {
+                b = toDoList.get(a).getStatus();
+            }
+        }
+        return b;
+    }
+
+    //EFFECTS: return the size of todolist
     public int getSize() {
         return toDoList.size();
     }
 
-    //EFFECTS: change task status
-    public void changeStatus(boolean b, Task task) {
-        task.setStatus(b);
+    //REQUIRES: 0 <= int i <= list size -1
+    //EFFECTS: return a task name and status
+    public String showStatus(int i) {
+        String s;
+        if (toDoList.get(i).getStatus()) {
+            s = "Name: " + toDoList.get(i).getName() + "     Status: DONE";
+        } else {
+            s = "Name: " + toDoList.get(i).getName() + "     Status: NOT DONE";
+        }
+        return s;
     }
 }
