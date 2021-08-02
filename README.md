@@ -13,6 +13,8 @@
 - As a user, I want to be able to mark a task as complete on my to-do list
 - As a user, I want to be able to delete a task from my to-do-list
 - As a user, I want to be able to see the number of uncomplete and number of completed tasks on my to-do list
+- As a user, I want to be able to save the state of the application
+- As a user, I want to be able to reload that state from file and resume exactly where they left off at some earlier time
 
 A *bulleted* list:
 - item 1
