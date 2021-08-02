@@ -41,12 +41,7 @@ public class Task implements Writable {
         return json;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        Task task = (Task) o;
-        return status == task.status && Objects.equals(name, task.name);
-    }
+//    public boolean checkEqual(Task t) {
+//        return t.getStatus() == status && t.getName() == name;
+//    }
 }
