@@ -25,6 +25,17 @@ public class ToDoListTest {
     }
 
     @Test
+    public void addTaskByTaskTest() {
+        Task t1 = new Task("test1");
+        Task t2 = new Task("test2");
+        test.addTaskByTask(t1);
+        assertTrue(test.isInList("test1"));
+        assertFalse(test.isInList("test2"));
+        test.addTaskByTask(t2);
+        assertTrue(test.isInList("test2"));
+    }
+
+    @Test
     public void deleteTaskTest() {
         test.addTask("test1");
         test.addTask("test2");
@@ -95,6 +106,14 @@ public class ToDoListTest {
         assertEquals(1,test.notDoneNumber());
         test.changeStatus(true,"test2");
         assertEquals(0,test.notDoneNumber());
+    }
+
+    @Test
+    public void getTest() {
+        test.addTask("test1");
+        test.addTask("test2");
+        assertTrue(test.get(0).equals(new Task("test1")));
+        assertTrue(test.get(1).equals(new Task("test2")));
     }
 }
 

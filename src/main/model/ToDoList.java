@@ -1,9 +1,15 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // Represents a todolist having tasks
-public class ToDoList {
+public class ToDoList implements Writable {
     ArrayList<Task> toDoList = new ArrayList<>();
 
     //EFFECTS: create a new todolist
@@ -15,6 +21,12 @@ public class ToDoList {
     public void addTask(String s) {
         Task task = new Task(s);
         toDoList.add(task);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: add a task in todolist by input task
+    public void addTaskByTask(Task t) {
+        toDoList.add(t);
     }
 
     //MODIFIES: this
@@ -96,5 +108,26 @@ public class ToDoList {
             }
         }
         return i;
+    }
+
+    // EFFECTS: returns task by giving index number
+    public Task get(int i) {
+        return toDoList.get(i);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("tasks", toDoListToJson());
+        return json;
+    }
+
+    // EFFECTS: returns tasks in this toDoList as a JSON array
+    private JSONArray toDoListToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (Task task : toDoList) {
+            jsonArray.put(task.toJson());
+        }
+        return jsonArray;
     }
 }

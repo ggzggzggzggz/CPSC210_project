@@ -1,16 +1,27 @@
 package ui;
 
 import model.ToDoList;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.List;
 
 // Task application
 public class TaskApp {
+    private static final String JSON_STORE = "./data/todolist.json";
     private Scanner input;
     private ToDoList toDoList;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: runs the task application
-    public TaskApp() {
+    public TaskApp() throws FileNotFoundException {
+        input = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runTask();
     }
 
@@ -45,8 +56,12 @@ public class TaskApp {
             doDelete();
         } else if (command.equals("f")) {
             doFinish();
-        } else if (command.equals("s")) {
+        } else if (command.equals("p")) {
             doShow();
+        } else if (command.equals("s")) {
+            saveToDoList();
+        } else if (command.equals("l")) {
+            loadToDoList();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -65,7 +80,9 @@ public class TaskApp {
         System.out.println("\ta -> add task");
         System.out.println("\td -> delete task");
         System.out.println("\tf -> finish task");
-        System.out.println("\ts -> show all tasks");
+        System.out.println("\tp -> print all tasks");
+        System.out.println("\ts -> save todo list to file");
+        System.out.println("\tl -> load todo list from file");
         System.out.println("\tq -> quit");
     }
 
@@ -118,5 +135,28 @@ public class TaskApp {
         }
         System.out.printf("The number of completed tasks: " + toDoList.doneNumber() + "\n");
         System.out.println("The number of uncompleted tasks: " + toDoList.notDoneNumber());
+    }
+
+    // EFFECTS: saves the todolist to file
+    private void saveToDoList() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(toDoList);
+            jsonWriter.close();
+            System.out.println("Saved " + "todolist" + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads todolist from file
+    private void loadToDoList() {
+        try {
+            toDoList = jsonReader.read();
+            System.out.println("Loaded " + "todolist" + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 }
