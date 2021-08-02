@@ -33,9 +33,12 @@ class TaskTest {
         Task test3 = new Task("testtest");
         test1.setStatus(true);
         Task test4 = new Task("testtest");;
+        Task test5 = new Task("test");
+        test5.setStatus(true);
         assertFalse(test1.equals(test2));
         assertFalse(test1.equals(test3));
         assertFalse(test1.equals(test4));
         assertTrue(test1.equals(test1));
+        assertTrue(test1.equals(test5));
     }
 }
