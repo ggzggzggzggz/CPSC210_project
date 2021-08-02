@@ -46,15 +46,7 @@ public class Task implements Writable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
         Task task = (Task) o;
         return status == task.status && Objects.equals(name, task.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(status, name);
     }
 }

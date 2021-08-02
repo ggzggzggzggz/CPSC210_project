@@ -7,7 +7,6 @@ import persistence.JsonWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.List;
 
 // Task application
 public class TaskApp {

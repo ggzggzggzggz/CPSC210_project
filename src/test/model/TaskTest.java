@@ -24,4 +24,18 @@ class TaskTest {
         test.setStatus(true);
         assertTrue(test.getStatus());
     }
+
+    @Test
+    public void equalsTest() {
+        Task test1 = new Task("test");
+        test1.setStatus(true);
+        Task test2 = new Task("test");
+        Task test3 = new Task("testtest");
+        test1.setStatus(true);
+        Task test4 = new Task("testtest");;
+        assertFalse(test1.equals(test2));
+        assertFalse(test1.equals(test3));
+        assertFalse(test1.equals(test4));
+        assertTrue(test1.equals(test1));
+    }
 }
