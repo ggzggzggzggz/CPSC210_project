@@ -24,21 +24,4 @@ class TaskTest {
         test.setStatus(true);
         assertTrue(test.getStatus());
     }
-
-//    @Test
-//    public void checkEqualTest() {
-//        Task test1 = new Task("test");
-//        test1.setStatus(true);
-//        Task test2 = new Task("test");
-//        Task test3 = new Task("testtest");
-//        test1.setStatus(true);
-//        Task test4 = new Task("testtest");;
-//        Task test5 = new Task("test");
-//        test5.setStatus(true);
-//        assertFalse(test1.checkEqual(test2));
-//        assertFalse(test1.checkEqual(test3));
-//        assertFalse(test1.checkEqual(test4));
-//        assertTrue(test1.checkEqual(test1));
-//        assertTrue(test1.checkEqual(test5));
-//    }
 }

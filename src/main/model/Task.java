@@ -40,8 +40,4 @@ public class Task implements Writable {
         json.put("status", String.valueOf(status));
         return json;
     }
-
-//    public boolean checkEqual(Task t) {
-//        return t.getStatus() == status && t.getName() == name;
-//    }
 }
