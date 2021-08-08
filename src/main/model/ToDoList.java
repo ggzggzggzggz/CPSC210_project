@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 // Represents a todolist having tasks
@@ -111,6 +112,23 @@ public class ToDoList implements Writable {
     // EFFECTS: returns task by giving index number
     public Task get(int i) {
         return toDoList.get(i);
+    }
+
+    public void removeIndex(int i) {
+        toDoList.remove(i);
+    }
+
+    public DefaultListModel getDefaultListModel() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (Task val : toDoList) {
+            if (val.getStatus()) {
+                model.addElement(val.getName() + "      DONE");
+            } else {
+                model.addElement(val.getName() + "  NOT DONE");
+            }
+
+        }
+        return model;
     }
 
     @Override
