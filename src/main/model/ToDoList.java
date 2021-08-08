@@ -114,23 +114,6 @@ public class ToDoList implements Writable {
         return toDoList.get(i);
     }
 
-    public void removeIndex(int i) {
-        toDoList.remove(i);
-    }
-
-    public DefaultListModel getDefaultListModel() {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        for (Task val : toDoList) {
-            if (val.getStatus()) {
-                model.addElement(val.getName() + "      DONE");
-            } else {
-                model.addElement(val.getName() + "  NOT DONE");
-            }
-
-        }
-        return model;
-    }
-
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

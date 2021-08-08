@@ -17,12 +17,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ListDemo extends JPanel
                       implements ListSelectionListener {
     private JList list;
-    private ToDoList toDoList;
     private static final String addString = "Add";
     private static final String deleteString = "Delete";
     private static final String doneString = "Done";
@@ -39,11 +39,14 @@ public class ListDemo extends JPanel
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/todolist.json";
+    private DefaultListModel listModel;
 
     public ListDemo() {
         super(new BorderLayout());
-        toDoList = new ToDoList();
-        toDoList.addTask("test");
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        listModel = new DefaultListModel();
+        listModel.addElement("test       DONE");
         initializeList();
         initializeButton();
     }
@@ -54,16 +57,16 @@ public class ListDemo extends JPanel
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = list.getSelectedIndex();
-            toDoList.removeIndex(index);
+            listModel.remove(index);
 
-            int size = toDoList.getSize();
+            int size = listModel.getSize();
 
             if (size == 0) { //Nobody's left, disable firing.
                 deleteButton.setEnabled(false);
                 doneButton.setEnabled(false);
 
             } else { //Select an index.
-                if (index == toDoList.getSize()) {
+                if (index == listModel.getSize()) {
                     //removed item in last position
                     index--;
                 }
@@ -89,7 +92,7 @@ public class ListDemo extends JPanel
 
             //User didn't type in a unique name...
             if (name.equals("") || alreadyInList(taskName.getText() + "   NOT DONE")
-                    || alreadyInList(taskName.getText() + "      DONE")
+                    || alreadyInList(taskName.getText() + "       DONE")
                     || alreadyInList(taskName.getText())) {
                 Toolkit.getDefaultToolkit().beep();
                 taskName.requestFocusInWindow();
@@ -104,7 +107,7 @@ public class ListDemo extends JPanel
                 index++;
             }
 
-            toDoList.addTask(name);
+            listModel.insertElementAt(taskName.getText() + "   NOT DONE", index);
             //If we just wanted to add to the end, we'd do this:
             //listModel.addElement(employeeName.getText());
 
@@ -121,7 +124,7 @@ public class ListDemo extends JPanel
         //get more sophisticated about the algorithm.  For example,
         //you might want to ignore white space and capitalization.
         protected boolean alreadyInList(String name) {
-            return toDoList.isInList(name);
+            return listModel.contains(name);
         }
 
         //Required by DocumentListener.
@@ -164,6 +167,7 @@ public class ListDemo extends JPanel
             if (list.getSelectedIndex() == -1) {
             //No selection, disable fire button.
                 deleteButton.setEnabled(false);
+                doneButton.setEnabled(false);
 
             } else {
             //Selection, enable the fire button.
@@ -205,7 +209,7 @@ public class ListDemo extends JPanel
 
     public void initializeList() {
         //Create the list and put it in a scroll pane.
-        list = new JList(toDoList.getDefaultListModel());
+        list = new JList(listModel);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setSelectedIndex(0);
         list.addListSelectionListener(this);
@@ -221,20 +225,20 @@ public class ListDemo extends JPanel
         taskName = new JTextField(10);
         taskName.addActionListener(addListener);
         taskName.getDocument().addDocumentListener(addListener);
-        String name = toDoList.get(
-                list.getSelectedIndex()).getName();
+        String name = listModel.getElementAt(
+                list.getSelectedIndex()).toString();
     }
 
     private void loadList() {
         loadButton = new JButton(loadString);
         loadButton.setActionCommand(loadString);
-//        loadButton.addActionListener(new LoadListener());
+        loadButton.addActionListener(new LoadListener());
     }
 
     private void saveList() {
         saveButton = new JButton(saveString);
         saveButton.setActionCommand(saveString);
-//        saveButton.addActionListener(new SaveListener());
+        saveButton.addActionListener(new SaveListener());
     }
 
     private void doneList() {
@@ -282,14 +286,64 @@ public class ListDemo extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             int index = list.getSelectedIndex();
-            toDoList.get(index).setStatus(true);
+            String s = String.valueOf(listModel.get(index));
+            s = s.substring(0,s.length() - 10);
+            s = s + "      DONE";
+            listModel.remove(index);
+            listModel.addElement(s);
         }
     }
 
-//    private class SaveListener implements ActionListener {
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            }
-//        }
-//    }
+    private class SaveListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int i = listModel.getSize() - 1;
+            ToDoList td = new ToDoList();
+            while (i >= 0) {
+                String status = String.valueOf(listModel.get(i));
+                status = status.substring(status.length() - 6);
+                String s = String.valueOf(listModel.get(i));
+                s = s.substring(0,s.length() - 10);
+                if (status.equals("T DONE")) {
+                    td.addTask(s);
+                } else {
+                    Task t = new Task(s);
+                    t.setStatus(true);
+                    td.addTaskByTask(t);
+                }
+                i--;
+            }
+            try {
+                jsonWriter.open();
+                jsonWriter.write(td);
+                jsonWriter.close();
+            } catch (FileNotFoundException exception) {
+                System.out.println("Unable to write to file: " + JSON_STORE);
+            }
+        }
+    }
+
+    private class LoadListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ToDoList td = new ToDoList();
+            try {
+                td = jsonReader.read();
+            } catch (IOException exception) {
+                System.out.println("Unable to read from file: " + JSON_STORE);
+            }
+            int i = td.getSize() - 1;
+            listModel.clear();
+            while (i >= 0) {
+                String s = td.get(i).getName();
+                if (td.get(i).getStatus()) {
+                    s = s + "      DONE";
+                } else {
+                    s = s + "  NOT DONE";
+                }
+                listModel.addElement(s);
+                i--;
+            }
+        }
+    }
 }
