@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.NotFoundException;
 import model.ToDoList;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -104,11 +105,11 @@ public class TaskApp {
         System.out.print("Enter the task name:");
         String name = input.next();
         System.out.println(name);
-        if (!toDoList.isInList(name)) {
-            System.out.printf("Sorry you have not added " + name);
-        } else {
+        try {
             toDoList.deleteTask(name);
             System.out.printf("Successfully delete " + name + " to task list");
+        } catch (NotFoundException e) {
+            System.out.printf("Sorry you have not added " + name);
         }
     }
 

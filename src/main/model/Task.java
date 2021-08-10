@@ -40,4 +40,21 @@ public class Task implements Writable {
         json.put("status", String.valueOf(status));
         return json;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Task task = (Task) o;
+        return status == task.status && Objects.equals(name, task.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, name);
+    }
 }

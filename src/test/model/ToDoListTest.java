@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 public class ToDoListTest {
 
@@ -41,7 +43,16 @@ public class ToDoListTest {
         test.addTask("test2");
         assertTrue(test.isInList("test1"));
         assertTrue(test.isInList("test2"));
-        test.deleteTask("test1");
+        try {
+            test.deleteTask("test1");
+        } catch (Exception e) {
+           fail("Not found");
+        }
+        try {
+            test.deleteTask("test3");
+            fail("No exception was thrown");
+        } catch (Exception e) {
+        }
         assertFalse(test.isInList("test1"));
         assertTrue(test.isInList("test2"));
     }

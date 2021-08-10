@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.NotFoundException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -30,11 +31,15 @@ public class ToDoList implements Writable {
 
     //MODIFIES: this
     //EFFECTS: delete a task in todolist
-    public void deleteTask(String s) {
+    public void deleteTask(String s) throws NotFoundException {
+        int i = toDoList.size();
         for (int a = toDoList.size() - 1; a >= 0; a--) {
             if (toDoList.get(a).getName().equals(s)) {
                 toDoList.remove(toDoList.get(a));
             }
+        }
+        if (i - toDoList.size() == 0) {
+            throw new NotFoundException();
         }
     }
 
