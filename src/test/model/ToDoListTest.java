@@ -121,10 +121,12 @@ public class ToDoListTest {
 
     @Test
     public void getTest() {
-        test.addTask("test1");
-        test.addTask("test2");
-        assertTrue(test.get(0).equals(new Task("test1")));
-        assertTrue(test.get(1).equals(new Task("test2")));
+        Task t1 = new Task("t1");
+        Task t2 = new Task("t2");
+        test.addTaskByTask(t1);
+        test.addTaskByTask(t2);
+        assertTrue(test.get(0).equals(t1));
+        assertTrue(test.get(1).equals(t2));
     }
 }
 
