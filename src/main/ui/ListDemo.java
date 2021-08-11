@@ -41,6 +41,7 @@ public class ListDemo extends JPanel
     private JsonReader jsonReader;
     private static final String JSON_STORE = "./data/todolist.json";
     private DefaultListModel listModel;
+    private ToDoList td;
 
     // EFFECTS: runs the task application
     public ListDemo() {
@@ -364,7 +365,7 @@ public class ListDemo extends JPanel
         public void actionPerformed(ActionEvent e) {
             otherPlay();
             int i = listModel.getSize() - 1;
-            ToDoList td = new ToDoList();
+            td = new ToDoList();
             while (i >= 0) {
                 String status = String.valueOf(listModel.get(i));
                 status = status.substring(status.length() - 6);
@@ -394,7 +395,7 @@ public class ListDemo extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             otherPlay();
-            ToDoList td = new ToDoList();
+            td = new ToDoList();
             try {
                 td = jsonReader.read();
             } catch (IOException exception) {
