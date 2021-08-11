@@ -19,5 +19,5 @@
 In ToDoList class and deleteTask method that has a robust design.
 
 ## Phase 4: Task 3
-I think if I have more time, I want JsonReader and JsonWriter to connect ToDoList rather than ListDemo. I think other parts of UML look good. 
+I think if I have more time, I want JsonReader and JsonWriter to connect ToDoList rather than ListDemo. I think other parts of UML looks good. 
 
